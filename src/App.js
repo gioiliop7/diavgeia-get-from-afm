@@ -82,7 +82,7 @@ export default function App() {
               )}
           </tbody>
         </table>
-        {data && data.length == 0 && (
+        {data && data.length === 0 && (
           <h4 className="text-center">Δεν υπάρχουν αποφάσεις</h4>
         )}
       </Container>
