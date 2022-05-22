@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import donwloadIcon from "./assets/dl.png";
-import diavgeiaLogo from "./assets/diavgeia.png"
+import diavgeiaLogo from "./assets/diavgeia.png";
 
 export default function App() {
   const [data, setData] = useState(null);
@@ -35,7 +35,14 @@ export default function App() {
   return (
     <div className="App">
       <Container>
-        <a href={"https://diavgeia.gov.gr"} target="_blank" className="d-flex justify-content-center" rel="noreferrer"><img src={diavgeiaLogo} alt='diavgeia'/></a>
+        <a
+          href={"https://diavgeia.gov.gr"}
+          target="_blank"
+          className="d-flex justify-content-center"
+          rel="noreferrer"
+        >
+          <img src={diavgeiaLogo} alt="diavgeia" />
+        </a>
         {error && (
           <div>{`There is a problem fetching the post data - ${error}`}</div>
         )}
@@ -51,6 +58,7 @@ export default function App() {
           </thead>
           <tbody>
             {data &&
+              data.length > 0 &&
               data.map(
                 ({
                   ada,
@@ -74,6 +82,9 @@ export default function App() {
               )}
           </tbody>
         </table>
+        {data && data.length == 0 && (
+          <h4 className="text-center">Δεν υπάρχουν αποφάσεις</h4>
+        )}
       </Container>
     </div>
   );
