@@ -24,7 +24,6 @@ export default function App() {
       })
       .then((actualData) => {
         let decisions = actualData.decisions;
-        console.log(decisions);
         setData(decisions);
         setError(null);
       })
@@ -60,7 +59,7 @@ export default function App() {
                   extraFieldValues,
                   documentUrl,
                 }) => (
-                  <tr>
+                  <tr key={data}>
                     <td>{subject}</td>
                     <td>{protocolNumber}</td>
                     <td>{ada}</td>
