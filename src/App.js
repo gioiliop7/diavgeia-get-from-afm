@@ -1,5 +1,7 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import donwloadIcon from "./assets/dl.png";
@@ -33,59 +35,67 @@ export default function App() {
       });
   }, []);
   return (
-    <div className="App">
-      <Container>
-        <a
-          href={"https://diavgeia.gov.gr"}
-          target="_blank"
-          className="d-flex justify-content-center"
-          rel="noreferrer"
-        >
-          <img src={diavgeiaLogo} alt="diavgeia" />
-        </a>
-        {error && (
-          <div>{`There is a problem fetching the post data - ${error}`}</div>
-        )}
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Τίτλος</th>
-              <th scope="col">Αριθμός πρωτοκόλλου</th>
-              <th scope="col">ΑΔΑ</th>
-              <th scope="col">Υπογραφή με</th>
-              <th scope="col">Αρχείο</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data &&
-              data.length > 0 &&
-              data.map(
-                ({
-                  ada,
-                  subject,
-                  protocolNumber,
-                  extraFieldValues,
-                  documentUrl,
-                }) => (
-                  <tr key={data}>
-                    <td>{subject}</td>
-                    <td>{protocolNumber}</td>
-                    <td>{ada}</td>
-                    <td>{extraFieldValues.org.name}</td>
-                    <td className="filetd">
-                      <a href={documentUrl} rel="noreferrer" target={"_blank"}>
-                        <img className="dlicon" alt="dl" src={donwloadIcon} />
-                      </a>
-                    </td>
-                  </tr>
-                )
-              )}
-          </tbody>
-        </table>
-        {data && data.length === 0 && (
-          <h4 className="text-center">Δεν υπάρχουν αποφάσεις</h4>
-        )}
-      </Container>
-    </div>
+    <>
+      <Header></Header>
+      <main>
+        <Container>
+          <a
+            href={"https://diavgeia.gov.gr"}
+            target="_blank"
+            className="d-flex justify-content-center"
+            rel="noreferrer"
+          >
+            <img src={diavgeiaLogo} alt="diavgeia" />
+          </a>
+          {error && (
+            <div>{`There is a problem fetching the post data - ${error}`}</div>
+          )}
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">Τίτλος</th>
+                <th scope="col">Αριθμός πρωτοκόλλου</th>
+                <th scope="col">ΑΔΑ</th>
+                <th scope="col">Υπογραφή με</th>
+                <th scope="col">Αρχείο</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data &&
+                data.length > 0 &&
+                data.map(
+                  ({
+                    ada,
+                    subject,
+                    protocolNumber,
+                    extraFieldValues,
+                    documentUrl,
+                  }) => (
+                    <tr key={data}>
+                      <td>{subject}</td>
+                      <td>{protocolNumber}</td>
+                      <td>{ada}</td>
+                      <td>{extraFieldValues.org.name}</td>
+                      <td className="filetd">
+                        <a
+                          href={documentUrl}
+                          rel="noreferrer"
+                          target={"_blank"}
+                        >
+                          <img className="dlicon" alt="dl" src={donwloadIcon} />
+                        </a>
+                      </td>
+                    </tr>
+                  )
+                )}
+            </tbody>
+          </table>
+          {data && data.length === 0 && (
+            <h4 className="text-center">Δεν υπάρχουν αποφάσεις</h4>
+          )}
+        </Container>
+      </main>
+      <Footer></Footer>
+    </>
   );
 }
