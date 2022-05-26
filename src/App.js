@@ -12,27 +12,40 @@ export default function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const afm = process.env.REACT_APP_AFM;
-    fetch(
-      `https://diavgeia.gov.gr/opendata/search/advanced.json?q=receiverAFM:"${afm}"`
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            `This is an HTTP error: The status is ${response.status}`
-          );
-        }
-        return response.json();
-      })
-      .then((actualData) => {
-        let decisions = actualData.decisions;
-        setData(decisions);
-        setError(null);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setData(null);
-      });
+    let afm = process.env.REACT_APP_AFM;
+    function checkAFM(afm) {
+      afm = afm.split("").reverse().join("");
+      let Num1 = 0;
+      for (var iDigit = 1; iDigit <= 8; iDigit++) {
+        Num1 += afm.charAt(iDigit) << iDigit;
+      }
+      return (Num1 % 11) % 10 == afm.charAt(0);
+    }
+    console.log(typeof checkAFM(afm));
+    if (checkAFM(afm) == true) {
+      fetch(
+        `https://diavgeia.gov.gr/opendata/search/advanced.json?q=receiverAFM:"${afm}"`
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              `This is an HTTP error: The status is ${response.status}`
+            );
+          }
+          return response.json();
+        })
+        .then((actualData) => {
+          let decisions = actualData.decisions;
+          setData(decisions);
+          setError(null);
+        })
+        .catch((err) => {
+          setError(err.message);
+          setData(null);
+        });
+    }else{
+      setData('Μή έγκυρος ΑΦΜ');
+    }
   }, []);
   return (
     <>
@@ -62,6 +75,7 @@ export default function App() {
             </thead>
             <tbody>
               {data &&
+              typeof(data) != 'string' &&
                 data.length > 0 &&
                 data.map(
                   ({
@@ -90,6 +104,9 @@ export default function App() {
                 )}
             </tbody>
           </table>
+          {data && data === 'Μή έγκυρος ΑΦΜ' && (
+            <h4 className="text-center">Μη έγκυρος ΑΦΜ</h4>
+          )}
           {data && data.length === 0 && (
             <h4 className="text-center">Δεν υπάρχουν αποφάσεις</h4>
           )}
